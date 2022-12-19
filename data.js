@@ -11,7 +11,6 @@ const buttonsArray = [
     {
         title: '+-',
         class: 'button special',
-        value: '',
         function: () => {
             activeNumber = activeNumber * -1;
             updateDisplayNumber(activeNumber);
@@ -20,7 +19,6 @@ const buttonsArray = [
     {
         title: '%',
         class: 'button special',
-        value: 1,
         function: () => {
 
         }
@@ -28,7 +26,6 @@ const buttonsArray = [
     {
         title: '√',
         class: 'button special',
-        value: 1,
         function: () => {
             addOperator('√');
         }
@@ -36,7 +33,6 @@ const buttonsArray = [
     {
         title: 'M',
         class: 'button special',
-        value: '',
         function: () => {
             memoryAddNumber();
         }
@@ -44,7 +40,6 @@ const buttonsArray = [
     {
         title: 'MR',
         class: 'button special',
-        value: '',
         function: () => {
             memoryRecallNumber();
         }
@@ -52,7 +47,6 @@ const buttonsArray = [
     {
         title: 'MC',
         class: 'button special',
-        value: '',
         function: () => {
             memoryClear();
         }
@@ -60,7 +54,6 @@ const buttonsArray = [
     {
         title: '+',
         class: 'button operator',
-        value: 'plus',
         function: () => {
             addOperator('+');
         }
@@ -68,13 +61,11 @@ const buttonsArray = [
     {
         title: '1',
         class: 'button number',
-        value: 1,
         function: () => {addNumber(1);}
     },
     {
         title: '2',
         class: 'button number',
-        value: 2,
         function: () => {
             addNumber(2);
         }
@@ -82,7 +73,6 @@ const buttonsArray = [
     {
         title: '3',
         class: 'button number',
-        value: 3,
         function: () => {
             addNumber(3)
         }
@@ -90,7 +80,6 @@ const buttonsArray = [
     {
         title: '-',
         class: 'button operator',
-        value: 'minus',
         function: () => {
             addOperator('-');
         }
@@ -98,7 +87,6 @@ const buttonsArray = [
     {
         title: '4',
         class: 'button number',
-        value: '',
         function: () => {
             addNumber(4)
         }
@@ -106,7 +94,6 @@ const buttonsArray = [
     {
         title: '5',
         class: 'button number',
-        value: '',
         function: () => {
             addNumber(5)
         }
@@ -114,7 +101,6 @@ const buttonsArray = [
     {
         title: '6',
         class: 'button number',
-        value: '',
         function: () => {
             addNumber(6)
         }
@@ -122,7 +108,6 @@ const buttonsArray = [
     {
         title: '*',
         class: 'button operator',
-        value: 'multiply',
         function: () => {
             addOperator('*');
         }
@@ -130,7 +115,6 @@ const buttonsArray = [
     {
         title: '7',
         class: 'button number',
-        value: 7,
         function: () => {
             addNumber(7)
         }
@@ -138,7 +122,6 @@ const buttonsArray = [
     {
         title: '8',
         class: 'button number',
-        value: 8,
         function: () => {
             addNumber(8)
         }
@@ -146,7 +129,6 @@ const buttonsArray = [
     {
         title: '9',
         class: 'button number',
-        value: '9',
         function: () => {
             addNumber(9)
         }
@@ -155,32 +137,21 @@ const buttonsArray = [
         title: '/',
         class: 'button operator',
         value: 'divide',
-        function: () => {
-            addOperator('/');
-        }
+        function: () => {addOperator('/');}
     },
     {
         title: '0',
         class: 'button number doubled',
-        value: '',
-        function: () => {
-            addNumber(0)
-        }
+        function: () => {addNumber(0)}
     },
     {
         title: '.',
         class: 'button number',
-        value: '',
-        function: () => {
-            addNumber('.');
-        }
+        function: () => {addNumber('.');}
     },
     {
         title: '=',
         class: 'button operator',
-        value: 'equal',
-        function: () => {
-            operate(activeNumber, storedNumber, activeOperator);
-        }
+        function: () => {operate(activeNumber, storedNumber, activeOperator);}
     }
 ]
