@@ -1,4 +1,3 @@
-// var
 let buttonsContainer = document.querySelector('.calculator__buttons-container');
 let displayNumber = document.getElementById("display-number")
 let displayExpression = document.querySelector('.display__number--small');
@@ -25,6 +24,15 @@ function drawButtons(array){
 }
 
 function operate(active, stored, operator){
+    if(operator === '√'){
+        if(activeNumber===''){
+            active = storedNumber;
+        }
+        activeNumber = Math.sqrt(active);
+        resetDecimal()
+        updateDisplayNumber(activeNumber);
+        return;
+    }
     updateDisplayExpression();
     if(activeOperator === ""){
         return;
@@ -46,13 +54,7 @@ function operate(active, stored, operator){
         }
         activeNumber = storedNumber / activeNumber;
     }
-    else if(operator === '√'){
-        activeNumber = Math.sqrt(active);
-        resetDecimal()
-        updateDisplayNumber(activeNumber);
-        activeOperator = "";
-        return;
-    }
+
     resetDecimal()
     updateDisplayNumber(activeNumber);
     activeOperator = "";
@@ -65,17 +67,17 @@ function resetDecimal(){
 }
 
 function addOperator(value){
+    resetDecimal();
+    if(value === '√'){
+        operate(activeNumber, storedNumber, value);
+        return;
+    }
     if(activeOperator != ""){
         operate(activeNumber, storedNumber, activeOperator);
         activeOperator = value;
         return;
     }
     activeOperator = value;
-    resetDecimal();
-    if(value === '√'){
-        operate(activeNumber, storedNumber, value);
-        return;
-    }
     saveNumber();
     updateDisplayExpression();
 }
@@ -103,7 +105,7 @@ function addNumber(entry){
 }
 function saveNumber(){
     storedNumber = activeNumber;
-    activeNumber = 0;
+    activeNumber = '';
 }
 function clearNumber(){
     resetDecimal();
@@ -112,18 +114,14 @@ function clearNumber(){
     activeOperator = "";
 }
 
-function updateDisplayNumber(number){ // formatting -> numbers + 15 digits; numbers >= 10^15
-    console.log("stored: " + storedNumber + "active: " + activeNumber);
-    console.log(activeOperator);
+function updateDisplayNumber(number){
     if(number >= (10 ** 14)){
         let display = number.toExponential(7);
         displayNumber.textContent = display;
         return;
     }
-    if(activeNumber % 1 != 0){
-        // let decimals = 12 - Math.trunc(activeNumber).toString().length;
-        let oi = (number.toFixed(10));
-        displayNumber.textContent = oi;
+    if(activeNumber % 1 != 0 && activeNumber.toString().length > 10 ){
+        displayNumber.textContent = number.toFixed(10)
         return;
     }
     displayNumber.textContent = number;
@@ -148,36 +146,12 @@ function memoryRecallNumber(){
 function memoryClear(){
     memoryNumber = '';
 }
-let varDisplay = document.getElementById("variables");
-window.setInterval(()=> {
-    varDisplay.textContent =
-    `active: ${activeNumber}, stored: ${storedNumber}, op: ${activeOperator}`
-}, 500);
+// init
 drawButtons(buttonsArray);
 
-class Button{
-    constructor(value, type){
-        this.value = value;
-        this.type = type;
-        this.function = (function(){
-            if(this.type === 'number'){
-                return addNumber(value);
-            }
-            if(this.type === 'operator'){
-                return addOperator(value);
-            }
-            if(this.title === '='){
-                return operate(activeNumber, storedNumber, activeOperator);
-            }
-            if(this.type === 'C'){
-                return clearNumber(e);
-            }
-            if(this.title === '+-'){}
-            if(this.title === '%'){}
-            if(this.title === 'MR'){}
-            if(this.title === 'MC'){}
-            if(this.title === 'M'){}
-            if(this.title === '.'){}
-        })
-    }
-}
+// debug code
+// let varDisplay = document.getElementById("variables");
+// window.setInterval(()=> {
+//     varDisplay.textContent =
+//     `active: ${activeNumber}, stored: ${storedNumber}, op: ${activeOperator}`
+// }, 500);
