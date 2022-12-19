@@ -3,9 +3,9 @@ const buttonsArray = [
         title: 'C',
         class: 'button special',
         function: () => {
-            document.querySelector('.display__number--big').textContent = "0"
-            activeNumber = 0;
-            storedNumber = 0;
+            clearNumber();
+            updateDisplayNumber(activeNumber);
+            updateDisplayExpression();
         }
     },
     {
@@ -38,7 +38,7 @@ const buttonsArray = [
         class: 'button special',
         value: '',
         function: () => {
-
+            memoryAddNumber();
         }
     },
     {
@@ -46,7 +46,7 @@ const buttonsArray = [
         class: 'button special',
         value: '',
         function: () => {
-
+            memoryRecallNumber();
         }
     },
     {
@@ -54,7 +54,7 @@ const buttonsArray = [
         class: 'button special',
         value: '',
         function: () => {
-
+            memoryClear();
         }
     },
     {
