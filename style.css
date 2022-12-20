@@ -2,8 +2,10 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* border: 1px solid red; */
 }
 body{
+    height: 100%;
     /* overflow: hidden; */
     background: rgb(0, 0, 0);
 }
@@ -15,10 +17,10 @@ canvas{
     z-index: -1;
 }
 .calculator{
-    margin: 100px auto;
+    margin: 150px auto;
     width: 90%;
     min-width: 250px;
-    max-width: 400px;
+    max-width: 350px;
     background-color: rgba(25, 25, 25, 0.7);
     padding: 20px 0 20px;
     border-radius: 10px;
@@ -42,10 +44,18 @@ canvas{
 .social-icons a:visited{
     color: orange;
 }
+.theme__button{
+    cursor: pointer;
+    font-size: 25px;
+    margin-left: auto;
+    color: orange;
+    align-self: center;
+}
 .calculator__display{
-    margin: 30px auto;
+    margin: 10px auto;
     width: 90%;
     min-height: 100px;
+    border-radius: 5px;
     background-color: rgba(176, 116, 5, 0.744);
     display: flex;
     flex-direction: column;
@@ -62,15 +72,18 @@ canvas{
     font-size: 2.5rem;
 }
 .calculator__buttons-container{
-    gap: 0px;
-    margin: 0 auto 15px;
+    align-content: center;
+    justify-content: center;
+    margin: 20px auto 10px;
     width: 80%;
+    gap: 5px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(6, 1fr)
 }
 .button{
-    height: 80%;
+    align-self: center;
+    /* height: 80%; */
     aspect-ratio: 1;
     border-radius: 50%;
     font-weight: bolder;
@@ -81,18 +94,18 @@ canvas{
 }
 .doubled{
     grid-column: span 2;
-    aspect-ratio: unset;
+    aspect-ratio: 2.2/1;
     border-radius: 50px;
 }
 .special{
-    background-color: rgba(179, 176, 176, 0.596) ;
+    background-color: rgba(179, 176, 176, 0.8) ;
     color: black;
 }
 .operator{
-    background-color: rgba(255, 166, 0, 0.549);
+    background-color: rgba(255, 166, 0, 0.8);
 }
 .number{
-    background-color: rgba(81, 81, 81, 0.578);
+    background-color: rgba(44, 44, 44, 0.85);
 }
 .calculator__footer{
     color: orange;
