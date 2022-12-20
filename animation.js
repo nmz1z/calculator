@@ -1,6 +1,13 @@
 const canvas = document.getElementById('bg__canvas');
 const ctx = canvas.getContext('2d');
-canvas.height = window.innerHeight;
+
+
+let body = document.body;
+let html = document.documentElement;
+let docHeight = Math.max(body.scrollHeight, body.offsetHeight,
+  html.clientHeight, html.scrollHeight, html.offsetHeight);
+
+canvas.height = docHeight;
 canvas.width = window.innerWidth;
 
 var vertical = true;
@@ -43,7 +50,7 @@ class Effect {
     #initialize(){
         // horizontal
         for (let i = 0; i < this.rows; i++) {
-            this.symbols[i] = new Symbol(0, i, this.font, this.height, this.width);
+            this.symbols[i] = new Symbol(canvas.width, i, this.font, this.height, this.width);
         }
     }
     resize(width, height){
@@ -62,7 +69,7 @@ const nextFrame = 1000/fps;
 let timer = 0;
 
 let canvasBgColor = 'rgba(0, 0, 0, 0.05)';
-let canvasTextColor = 'rgb(130, 65, 0)';
+let canvasTextColor = 'rgb(120, 60, 0)';
 
 function animate(timeStamp){
     const deltaTime = timeStamp - lastTime;
@@ -85,7 +92,12 @@ function animate(timeStamp){
 animate(50);
 
 window.addEventListener('resize', () => {
-    canvas.height = window.innerHeight;
+    let body = document.body;
+    let html = document.documentElement;
+    let docHeight = Math.max(body.scrollHeight, body.offsetHeight,
+    html.clientHeight, html.scrollHeight, html.offsetHeight);
+
+    canvas.height = docHeight;
     canvas.width = window.innerWidth;
     effect.resize(canvas.width, canvas.height);
 });
