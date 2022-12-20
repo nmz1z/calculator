@@ -61,7 +61,7 @@ let fps = 15;
 const nextFrame = 1000/fps;
 let timer = 0;
 
-let canvasBgColor = 'rgba(10, 10, 10, 0.05)';
+let canvasBgColor = 'rgba(0, 0, 0, 0.05)';
 let canvasTextColor = 'rgb(130, 65, 0)';
 
 function animate(timeStamp){
