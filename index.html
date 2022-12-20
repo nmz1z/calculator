@@ -5,6 +5,7 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <link rel='stylesheet' href='style.css'>
+    <script src="https://kit.fontawesome.com/1d631eaa19.js" crossorigin="anonymous"></script>
     <script src="data.js"></script>
     <title>Document</title>
 </head>
@@ -12,12 +13,23 @@
     <canvas id="bg__canvas"></canvas>
     <main>
         <div class='calculator'>
+            <div class="calculator__header">
+                <img src="img/logo.png" class="logo">
+                <div class="social-icons">
+                    <a href="https://github.com/nmz1z/"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://twitter.com/nmz1z_"><i class="fa-brands fa-twitter"></i></a>
+                </div>
+            </div>
             <div class='calculator__display'>
                 <p class="display__number--small" id="display-expression">
                 </p>
                 <p class="display__number--big" id="display-number">0</p>
             </div>
             <div class='calculator__buttons-container'>
+            </div>
+            <div class="calculator__footer">
+                <p>nmz1z</p>
+                <p>2022</p>
             </div>
         </div>
         <p id="variables"></p>
