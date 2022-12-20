@@ -78,7 +78,11 @@ function addOperator(value){
         return;
     }
     activeOperator = value;
-    saveNumber();
+    if(activeNumber === ''){
+
+    }else{
+        saveNumber();
+    }
     updateDisplayExpression();
 }
 
@@ -149,9 +153,8 @@ function memoryClear(){
 // init
 drawButtons(buttonsArray);
 
-// debug code
-// let varDisplay = document.getElementById("variables");
-// window.setInterval(()=> {
-//     varDisplay.textContent =
-//     `active: ${activeNumber}, stored: ${storedNumber}, op: ${activeOperator}`
-// }, 500);
+let varDisplay = document.getElementById("variables");
+window.setInterval(()=> {
+    console.log(
+    `active: ${activeNumber}, stored: ${storedNumber}, op: ${activeOperator}`)
+}, 500);
