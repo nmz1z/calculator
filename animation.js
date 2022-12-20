@@ -64,7 +64,7 @@ class Effect {
 
 const effect = new Effect(canvas.width, canvas.height);
 let lastTime = 0;
-let fps = 15;
+let fps = 20;
 const nextFrame = 1000/fps;
 let timer = 0;
 
@@ -89,6 +89,24 @@ function animate(timeStamp){
     requestAnimationFrame(animate);
 
 }
+let themeButton = document.querySelector('.theme__button');
+let darkTheme = true;
+function toggleTheme() {
+    if(darkTheme){
+        darkTheme = false;
+        canvasBgColor = 'rgba(220, 220, 220, 0.05)';
+        canvasTextColor = 'rgb(180, 100, 0)';
+        document.getElementById('theme-button').className = 'fa-solid fa-sun'
+    }else{
+        darkTheme = true;
+        canvasBgColor = 'rgba(0, 0, 0, 0.05)';
+        canvasTextColor = 'rgb(120, 60, 0)';
+        document.getElementById('theme-button').className = 'fa-solid fa-moon'
+    }
+}
+//
+themeButton.addEventListener('click', toggleTheme);
+
 animate(50);
 
 window.addEventListener('resize', () => {

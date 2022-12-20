@@ -12,6 +12,7 @@ let pointActive = false;
 let decimalCounter = 1;
 
 
+
 function drawButtons(array){
     for(const object of array){
         let newButton = document.createElement("button");
