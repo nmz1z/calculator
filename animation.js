@@ -57,18 +57,21 @@ class Effect {
 
 const effect = new Effect(canvas.width, canvas.height);
 let lastTime = 0;
-let fps = 30;
+let fps = 15;
 const nextFrame = 1000/fps;
 let timer = 0;
+
+let canvasBgColor = 'rgba(10, 10, 10, 0.05)';
+let canvasTextColor = 'rgb(130, 65, 0)';
 
 function animate(timeStamp){
     const deltaTime = timeStamp - lastTime;
     lastTime = timeStamp;
     if(timer > nextFrame){
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-        ctx.font = effect.font + 'px monospace';
+        ctx.fillStyle = canvasBgColor;
+        // ctx.font = effect.font + 'px monospace';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = 'rgb(191, 118, 9)'
+        ctx.fillStyle = canvasTextColor;
         ctx.font = effect.font + 'px monospace';
         effect.symbols.forEach(symbol => symbol.drawHorizontal(ctx));
 
