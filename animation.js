@@ -64,7 +64,7 @@ class Effect {
 
 const effect = new Effect(canvas.width, canvas.height);
 let lastTime = 0;
-let fps = 20;
+let fps = 16;
 const nextFrame = 1000/fps;
 let timer = 0;
 
@@ -91,18 +91,28 @@ function animate(timeStamp){
 }
 let themeButton = document.querySelector('.theme__button');
 let darkTheme = true;
+let themeAnimation = false;
 function toggleTheme() {
+    if(themeAnimation){
+        return;
+    }
+    themeAnimation = true;
     if(darkTheme){
         darkTheme = false;
+        ctx.fillStyle = 'rgba(220, 220, 220, 0.65)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
         canvasBgColor = 'rgba(220, 220, 220, 0.05)';
         canvasTextColor = 'rgb(180, 100, 0)';
         document.getElementById('theme-button').className = 'fa-solid fa-sun'
     }else{
         darkTheme = true;
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.95)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
         canvasBgColor = 'rgba(0, 0, 0, 0.05)';
         canvasTextColor = 'rgb(120, 60, 0)';
         document.getElementById('theme-button').className = 'fa-solid fa-moon'
     }
+    setTimeout(()=>{themeAnimation = false;}, 500)
 }
 //
 themeButton.addEventListener('click', toggleTheme);
