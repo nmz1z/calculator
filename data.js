@@ -136,7 +136,6 @@ const buttonsArray = [
     {
         title: '/',
         class: 'button operator',
-        value: 'divide',
         function: () => {addOperator('/');}
     },
     {
@@ -152,6 +151,8 @@ const buttonsArray = [
     {
         title: '=',
         class: 'button operator',
-        function: () => {operate(activeNumber, storedNumber, activeOperator);}
+        function: () => {
+            operate(activeNumber, storedNumber, activeOperator);
+        }
     }
 ]
