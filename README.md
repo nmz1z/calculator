@@ -2,21 +2,25 @@
 https://nmz1z.github.io/calculator/
 
 # About this project:
-- I'm aware that using things like `parseFloat` and performing operations based on the string showed in the display would be easier, and most people probably build the project this way, but I decided to take the more difficult route for learning purposes.
-- So, all operations are performed based on numbers, only then converted to a string which is showed on display. Even the input process algorithm uses numbers only.
-- For this reason the code doesn't look so clean, since it was trickier to figure out the logic.
+- I chose not to use classes
+- Code is a mess, working on that soon.
+- All operations are performed based on numbers (only then converted into a string, showed in the display). Even the input process uses numbers only.
+
+## Update: December 29, 2022
+- added % function
+- Bug fixes:
+    - adding 2 decimal numbers
 
 ## Update: December 19, 2022
 - Bug fixes:
-    - square root not working after a basic operation
-    - decimal formating
+    - square root not working after an operation
+    - decimal formatting
 
 ## Update: December 18, 2022
-- Almost full functional (percentage left)
+- Almost full functional (percentage function left)
 - Added: memory function, sqrt, clear
 - Bug fixes:
     - decimal not working properly
-    - expression behavior
 
 ## Deployed: December 17, 2022
 - Basic HTML/CSS structure (provisory)
