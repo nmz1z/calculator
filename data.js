@@ -20,7 +20,7 @@ const buttonsArray = [
         title: '%',
         class: 'button special',
         function: () => {
-
+            addOperator('%')
         }
     },
     {
