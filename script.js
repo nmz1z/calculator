@@ -1,17 +1,12 @@
 let buttonsContainer = document.querySelector('.calculator__buttons-container');
 let displayNumber = document.getElementById("display-number")
 let displayExpression = document.querySelector('.display__number--small');
-
 let activeOperator = "";
-
 let activeNumber = 0;
 let storedNumber = "";
 let memoryNumber = "";
-let pointActive = false;
-
+let decimalActive = false;
 let decimalCounter = 1;
-
-
 
 function drawButtons(array){
     for(const object of array){
@@ -30,6 +25,15 @@ function operate(active, stored, operator){
             active = storedNumber;
         }
         activeNumber = Math.sqrt(active);
+        resetDecimal()
+        updateDisplayNumber(activeNumber);
+        return;
+    }
+    if(operator === '%'){
+        if(activeNumber===''){
+            active = storedNumber;
+        }
+        activeNumber = active/100;
         resetDecimal()
         updateDisplayNumber(activeNumber);
         return;
@@ -63,13 +67,13 @@ function operate(active, stored, operator){
 }
 
 function resetDecimal(){
-    pointActive = false;
+    decimalActive = false;
     decimalCounter = 1;
 }
 
 function addOperator(value){
     resetDecimal();
-    if(value === '√'){
+    if(value === '√' || value === '%'){
         operate(activeNumber, storedNumber, value);
         return;
     }
@@ -92,14 +96,17 @@ function addNumber(entry){
         return;
     }
     if(entry === '.'){
-        if(pointActive){
+        if(decimalActive){
             return;
         }
+        if(activeNumber ===  ""){
+            activeNumber = 0;
+        }
         displayNumber.textContent = activeNumber + '.'
-        pointActive = true;
+        decimalActive = true;
         return;
     }
-    if(pointActive){
+    if(decimalActive){
         activeNumber = activeNumber + entry / (10**decimalCounter);
         updateDisplayNumber(activeNumber);
         decimalCounter++;
@@ -126,7 +133,7 @@ function updateDisplayNumber(number){
         return;
     }
     if(activeNumber % 1 != 0 && activeNumber.toString().length > 10 ){
-        displayNumber.textContent = number.toFixed(10)
+        displayNumber.textContent = parseFloat(number.toFixed(10));
         return;
     }
     displayNumber.textContent = number;
