@@ -8,7 +8,7 @@ let memoryNumber = "";
 let decimalActive = false;
 let decimalCounter = 1;
 
-// DOM elements
+// inject buttons (based on data.js)
 function drawButtons(array){
     for(const object of array){
         let newButton = document.createElement("button");
@@ -20,7 +20,6 @@ function drawButtons(array){
     }
 }
 
-// Operation
 // perform operation on the displayed number (%, +-, sqrt)
 function operateCurrent(operator){
     if(currentNumber===''){
@@ -47,7 +46,7 @@ function operateCurrent(operator){
 
 }
 
-// perform operation between two operands
+// perform operation between two operands (+, -, *, /)
 function operate(operator){
     updateDisplayExpression();
     if(activeOperator === ""){
@@ -79,12 +78,15 @@ function operate(operator){
 // Input Methods
 function addOperator(value){
     resetDecimal();
+
     if(activeOperator != ""){
         operate(activeOperator);
         activeOperator = value;
         return;
     }
+
     activeOperator = value;
+
     if(currentNumber === ''){
 
     }else{
@@ -94,9 +96,12 @@ function addOperator(value){
 }
 
 function addDecimal(){
-    if(decimalActive){
+    if(currentNumber.toString().length > 9){
+        return;
+    } else if(decimalActive){
         return;
     }
+
     if(currentNumber ===  ""){
         currentNumber = 0;
     }
@@ -113,8 +118,8 @@ function addNumber(entry){
     if(currentNumber.toString().length > 11){
         return;
     }
+
     if(decimalActive){
-        console.log(entry / (10 ** decimalCounter));
         currentNumber = parseFloat((currentNumber + entry * (10 ** -decimalCounter)).toFixed(decimalCounter));
         updateDisplayNumber(currentNumber);
         decimalCounter++;
@@ -145,9 +150,9 @@ function updateDisplayNumber(number){
         displayNumber.textContent = display;
         return;
     }
-    else if(currentNumber % 1 != 0 && currentNumber.toString().length > 10 ){
-        console.log('decimal')
-        displayNumber.textContent = parseFloat(number.toFixed(10));
+    else if(currentNumber % 1 !== 0 && currentNumber.toString().length > 10 ){
+        let integerLength = Math.trunc(currentNumber).toString().length;
+        displayNumber.textContent = parseFloat(number.toFixed(10 - integerLength));
         return;
     }
     displayNumber.textContent = number;
