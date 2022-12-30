@@ -115,3 +115,6 @@ canvas{
 .calculator__footer p:last-of-type{
     font-size: smaller;
 }
+a:last-of-type{
+    color: orange;
+}
