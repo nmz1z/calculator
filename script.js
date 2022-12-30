@@ -18,26 +18,31 @@ function drawButtons(array){
         newButton.textContent = object.title;
     }
 }
-
-function operate(active, stored, operator){
+function operateCurrent(operator){
+    if(activeNumber===''){
+        activeNumber = storedNumber;
+    }
     if(operator === '√'){
-        if(activeNumber===''){
-            active = storedNumber;
-        }
-        activeNumber = Math.sqrt(active);
+        activeNumber = Math.sqrt(activeNumber);
         resetDecimal()
         updateDisplayNumber(activeNumber);
         return;
     }
-    if(operator === '%'){
-        if(activeNumber===''){
-            active = storedNumber;
-        }
-        activeNumber = active/100;
+    else if(operator === '%'){
+        activeNumber = activeNumber/100;
         resetDecimal()
         updateDisplayNumber(activeNumber);
         return;
     }
+    else if(operator === '+-'){
+        activeNumber = activeNumber/100;
+        updateDisplayNumber(activeNumber);
+        return;
+    }
+
+}
+
+function operate(operator){
     updateDisplayExpression();
     if(activeOperator === ""){
         return;
@@ -52,14 +57,13 @@ function operate(active, stored, operator){
         activeNumber = storedNumber * activeNumber;
     }
     else if(operator === '/'){
-        if(active === 0){
+        if(activeNumber === 0){
             activeNumber = 0;
             updateDisplayNumber("ERROR")
             return;
         }
         activeNumber = storedNumber / activeNumber;
     }
-
     resetDecimal()
     updateDisplayNumber(activeNumber);
     activeOperator = "";
@@ -73,12 +77,8 @@ function resetDecimal(){
 
 function addOperator(value){
     resetDecimal();
-    if(value === '√' || value === '%'){
-        operate(activeNumber, storedNumber, value);
-        return;
-    }
     if(activeOperator != ""){
-        operate(activeNumber, storedNumber, activeOperator);
+        operate(activeOperator);
         activeOperator = value;
         return;
     }
@@ -91,23 +91,24 @@ function addOperator(value){
     updateDisplayExpression();
 }
 
-function addNumber(entry){
-    if(activeNumber.toString().length > 15){
+function addDecimal(){
+    if(decimalActive){
         return;
     }
-    if(entry === '.'){
-        if(decimalActive){
-            return;
-        }
-        if(activeNumber ===  ""){
-            activeNumber = 0;
-        }
-        displayNumber.textContent = activeNumber + '.'
-        decimalActive = true;
+    if(activeNumber ===  ""){
+        activeNumber = 0;
+    }
+    displayNumber.textContent = activeNumber + '.'
+    decimalActive = true;
+}
+
+function addNumber(entry){
+    if(activeNumber.toString().length > 11){
         return;
     }
     if(decimalActive){
-        activeNumber = activeNumber + entry / (10**decimalCounter);
+        console.log(entry / (10 ** decimalCounter));
+        activeNumber = parseFloat((activeNumber + entry * (10 ** -decimalCounter)).toFixed(decimalCounter));
         updateDisplayNumber(activeNumber);
         decimalCounter++;
         return;
@@ -115,15 +116,19 @@ function addNumber(entry){
     activeNumber = 10 * activeNumber + entry;
     updateDisplayNumber(activeNumber);
 }
+
 function saveNumber(){
     storedNumber = activeNumber;
     activeNumber = '';
 }
+
 function clearNumber(){
     resetDecimal();
     activeNumber = 0;
     storedNumber = "";
     activeOperator = "";
+    updateDisplayNumber(activeNumber);
+    updateDisplayExpression();
 }
 
 function updateDisplayNumber(number){
@@ -132,7 +137,8 @@ function updateDisplayNumber(number){
         displayNumber.textContent = display;
         return;
     }
-    if(activeNumber % 1 != 0 && activeNumber.toString().length > 10 ){
+    else if(activeNumber % 1 != 0 && activeNumber.toString().length > 10 ){
+        console.log('decimal')
         displayNumber.textContent = parseFloat(number.toFixed(10));
         return;
     }
@@ -161,6 +167,7 @@ function memoryClear(){
 // init
 drawButtons(buttonsArray);
 
+// ignore this; debugging purposes
 let varDisplay = document.getElementById("variables");
 window.setInterval(()=> {
     console.log(
