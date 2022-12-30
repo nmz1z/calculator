@@ -8,6 +8,7 @@ let memoryNumber = "";
 let decimalActive = false;
 let decimalCounter = 1;
 
+// DOM elements
 function drawButtons(array){
     for(const object of array){
         let newButton = document.createElement("button");
@@ -18,10 +19,14 @@ function drawButtons(array){
         newButton.textContent = object.title;
     }
 }
+
+// Operation
+// perform operation on the displayed number (%, +-, sqrt)
 function operateCurrent(operator){
     if(activeNumber===''){
         activeNumber = storedNumber;
     }
+
     if(operator === '√'){
         activeNumber = Math.sqrt(activeNumber);
         resetDecimal()
@@ -35,13 +40,14 @@ function operateCurrent(operator){
         return;
     }
     else if(operator === '+-'){
-        activeNumber = activeNumber/100;
+        activeNumber = -activeNumber;
         updateDisplayNumber(activeNumber);
         return;
     }
 
 }
 
+// perform operation between two operands
 function operate(operator){
     updateDisplayExpression();
     if(activeOperator === ""){
@@ -67,14 +73,10 @@ function operate(operator){
     resetDecimal()
     updateDisplayNumber(activeNumber);
     activeOperator = "";
-    saveNumber();
+    storeNumber();
 }
 
-function resetDecimal(){
-    decimalActive = false;
-    decimalCounter = 1;
-}
-
+// Input Methods
 function addOperator(value){
     resetDecimal();
     if(activeOperator != ""){
@@ -86,7 +88,7 @@ function addOperator(value){
     if(activeNumber === ''){
 
     }else{
-        saveNumber();
+        storeNumber();
     }
     updateDisplayExpression();
 }
@@ -100,6 +102,11 @@ function addDecimal(){
     }
     displayNumber.textContent = activeNumber + '.'
     decimalActive = true;
+}
+
+function resetDecimal(){
+    decimalActive = false;
+    decimalCounter = 1;
 }
 
 function addNumber(entry){
@@ -117,7 +124,7 @@ function addNumber(entry){
     updateDisplayNumber(activeNumber);
 }
 
-function saveNumber(){
+function storeNumber(){
     storedNumber = activeNumber;
     activeNumber = '';
 }
@@ -131,6 +138,7 @@ function clearNumber(){
     updateDisplayExpression();
 }
 
+// Display
 function updateDisplayNumber(number){
     if(number >= (10 ** 14)){
         let display = number.toExponential(7);
@@ -153,6 +161,7 @@ function updateDisplayExpression(){
     displayExpression.textContent = `${storedNumber} ${activeOperator} ${num}`;
 }
 
+// Memory
 function memoryAddNumber(){
     memoryNumber = activeNumber;
 }
@@ -164,12 +173,6 @@ function memoryRecallNumber(){
 function memoryClear(){
     memoryNumber = '';
 }
+
 // init
 drawButtons(buttonsArray);
-
-// ignore this; debugging purposes
-let varDisplay = document.getElementById("variables");
-window.setInterval(()=> {
-    console.log(
-    `active: ${activeNumber}, stored: ${storedNumber}, op: ${activeOperator}`)
-}, 500);
