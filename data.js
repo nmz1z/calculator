@@ -4,30 +4,27 @@ const buttonsArray = [
         class: 'button special',
         function: () => {
             clearNumber();
-            updateDisplayNumber(activeNumber);
-            updateDisplayExpression();
         }
     },
     {
         title: '+-',
         class: 'button special',
         function: () => {
-            activeNumber = activeNumber * -1;
-            updateDisplayNumber(activeNumber);
+            operateCurrent('+-')
         }
     },
     {
         title: '%',
         class: 'button special',
         function: () => {
-            addOperator('%')
+            operateCurrent('%');
         }
     },
     {
         title: '√',
         class: 'button special',
         function: () => {
-            addOperator('√');
+            operateCurrent('√');
         }
     },
     {
@@ -146,13 +143,13 @@ const buttonsArray = [
     {
         title: '.',
         class: 'button number',
-        function: () => {addNumber('.');}
+        function: () => {addDecimal();}
     },
     {
         title: '=',
         class: 'button operator',
         function: () => {
-            operate(activeNumber, storedNumber, activeOperator);
+            operate(activeOperator);
         }
     }
 ]
