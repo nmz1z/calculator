@@ -2,7 +2,7 @@ let buttonsContainer = document.querySelector('.calculator__buttons-container');
 let displayNumber = document.getElementById("display-number")
 let displayExpression = document.querySelector('.display__number--small');
 let activeOperator = "";
-let activeNumber = 0;
+let currentNumber = 0;
 let storedNumber = "";
 let memoryNumber = "";
 let decimalActive = false;
@@ -23,25 +23,25 @@ function drawButtons(array){
 // Operation
 // perform operation on the displayed number (%, +-, sqrt)
 function operateCurrent(operator){
-    if(activeNumber===''){
-        activeNumber = storedNumber;
+    if(currentNumber===''){
+        currentNumber = storedNumber;
     }
 
     if(operator === '√'){
-        activeNumber = Math.sqrt(activeNumber);
+        currentNumber = Math.sqrt(currentNumber);
         resetDecimal()
-        updateDisplayNumber(activeNumber);
+        updateDisplayNumber(currentNumber);
         return;
     }
     else if(operator === '%'){
-        activeNumber = activeNumber/100;
+        currentNumber = currentNumber/100;
         resetDecimal()
-        updateDisplayNumber(activeNumber);
+        updateDisplayNumber(currentNumber);
         return;
     }
     else if(operator === '+-'){
-        activeNumber = -activeNumber;
-        updateDisplayNumber(activeNumber);
+        currentNumber = -currentNumber;
+        updateDisplayNumber(currentNumber);
         return;
     }
 
@@ -54,24 +54,24 @@ function operate(operator){
         return;
     }
     if(operator === '+'){
-        activeNumber = storedNumber + activeNumber;
+        currentNumber = storedNumber + currentNumber;
     }
     else if(operator === '-'){
-        activeNumber = storedNumber - activeNumber;
+        currentNumber = storedNumber - currentNumber;
     }
     else if(operator === '*'){
-        activeNumber = storedNumber * activeNumber;
+        currentNumber = storedNumber * currentNumber;
     }
     else if(operator === '/'){
-        if(activeNumber === 0){
-            activeNumber = 0;
+        if(currentNumber === 0){
+            currentNumber = 0;
             updateDisplayNumber("ERROR")
             return;
         }
-        activeNumber = storedNumber / activeNumber;
+        currentNumber = storedNumber / currentNumber;
     }
     resetDecimal()
-    updateDisplayNumber(activeNumber);
+    updateDisplayNumber(currentNumber);
     activeOperator = "";
     storeNumber();
 }
@@ -85,7 +85,7 @@ function addOperator(value){
         return;
     }
     activeOperator = value;
-    if(activeNumber === ''){
+    if(currentNumber === ''){
 
     }else{
         storeNumber();
@@ -97,10 +97,10 @@ function addDecimal(){
     if(decimalActive){
         return;
     }
-    if(activeNumber ===  ""){
-        activeNumber = 0;
+    if(currentNumber ===  ""){
+        currentNumber = 0;
     }
-    displayNumber.textContent = activeNumber + '.'
+    displayNumber.textContent = currentNumber + '.'
     decimalActive = true;
 }
 
@@ -110,31 +110,31 @@ function resetDecimal(){
 }
 
 function addNumber(entry){
-    if(activeNumber.toString().length > 11){
+    if(currentNumber.toString().length > 11){
         return;
     }
     if(decimalActive){
         console.log(entry / (10 ** decimalCounter));
-        activeNumber = parseFloat((activeNumber + entry * (10 ** -decimalCounter)).toFixed(decimalCounter));
-        updateDisplayNumber(activeNumber);
+        currentNumber = parseFloat((currentNumber + entry * (10 ** -decimalCounter)).toFixed(decimalCounter));
+        updateDisplayNumber(currentNumber);
         decimalCounter++;
         return;
     }
-    activeNumber = 10 * activeNumber + entry;
-    updateDisplayNumber(activeNumber);
+    currentNumber = 10 * currentNumber + entry;
+    updateDisplayNumber(currentNumber);
 }
 
 function storeNumber(){
-    storedNumber = activeNumber;
-    activeNumber = '';
+    storedNumber = currentNumber;
+    currentNumber = '';
 }
 
 function clearNumber(){
     resetDecimal();
-    activeNumber = 0;
+    currentNumber = 0;
     storedNumber = "";
     activeOperator = "";
-    updateDisplayNumber(activeNumber);
+    updateDisplayNumber(currentNumber);
     updateDisplayExpression();
 }
 
@@ -145,7 +145,7 @@ function updateDisplayNumber(number){
         displayNumber.textContent = display;
         return;
     }
-    else if(activeNumber % 1 != 0 && activeNumber.toString().length > 10 ){
+    else if(currentNumber % 1 != 0 && currentNumber.toString().length > 10 ){
         console.log('decimal')
         displayNumber.textContent = parseFloat(number.toFixed(10));
         return;
@@ -154,8 +154,8 @@ function updateDisplayNumber(number){
 }
 
 function updateDisplayExpression(){
-    let num = activeNumber;
-    if(activeNumber === 0){
+    let num = currentNumber;
+    if(currentNumber === 0){
         num = ""
     }
     displayExpression.textContent = `${storedNumber} ${activeOperator} ${num}`;
@@ -163,12 +163,12 @@ function updateDisplayExpression(){
 
 // Memory
 function memoryAddNumber(){
-    memoryNumber = activeNumber;
+    memoryNumber = currentNumber;
 }
 function memoryRecallNumber(){
     if(memoryNumber === '') return;
-    activeNumber = memoryNumber;
-    updateDisplayNumber(activeNumber);
+    currentNumber = memoryNumber;
+    updateDisplayNumber(currentNumber);
 }
 function memoryClear(){
     memoryNumber = '';
