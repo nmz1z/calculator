@@ -342,6 +342,17 @@ class Key {
 
 function getRandomText(array){
     let index = Math.floor(Math.random() * array.length);
+    const calcCounter = document.querySelectorAll('.calculator').length;
+    if(calcCounter === 0){
+        magicButton.textContent = 'Create another Calculator';
+        return;
+    }else if(calcCounter === 1){
+        magicButton.textContent = 'Ok, maybe one more?';
+        return;
+    }else if(calcCounter === 2){
+        magicButton.textContent = 'That\'s enough...';
+        return;
+    }
     if(magicButton.textContent === array[index]){
         console.log('new');
         getRandomText(textArray);
@@ -351,13 +362,14 @@ function getRandomText(array){
 }
 
 function createCalculator(){
+    getRandomText(textArray);
     const calculator = new Calculator;
     calculator.setUp(keysTemplate);
-    getRandomText(textArray);
+
 }
 
 // init
-const newCalc = new Calculator;
-newCalc.setUp(keysTemplate);
+// const newCalc = new Calculator;
+// newCalc.setUp(keysTemplate);
 const magicButton = document.getElementById('magic-button');
 magicButton.addEventListener('click', createCalculator);

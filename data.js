@@ -28,6 +28,7 @@ const textArray = [
     'This is so stupid',
     'Why??',
     'Don\'t click',
-    'STOP!',
+    'Stop!',
     'Seriously...',
+    'Please...'
     ];
