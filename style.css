@@ -2,11 +2,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* border: 1px solid red; */
 }
 body{
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    /* overflow: hidden; */
     background: rgb(0, 0, 0);
 }
 canvas{
@@ -16,8 +16,16 @@ canvas{
     left: 0;
     z-index: -1;
 }
+
+.calculator-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
 .calculator{
-    margin: 150px auto;
+    margin-top: 100px;
     width: 90%;
     min-width: 250px;
     max-width: 350px;
@@ -39,6 +47,7 @@ canvas{
     align-self: center;
 }
 .social-icons a{
+    margin-left: 5px;
     color: orange;
 }
 .social-icons a:visited{
@@ -117,4 +126,12 @@ canvas{
 }
 a:last-of-type{
     color: orange;
+}
+
+.magic-button{
+    align-self: center;
+    margin-top: 50px;
+    background-color: orange;
+    color: black;
+    font-size: x-large;
 }
