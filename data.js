@@ -1,124 +1,25 @@
-const buttonsArray = [
-    {
-        title: 'C',
-        class: 'button special',
-        function: () => clearNumber()
-    },
-    {
-        title: '+-',
-        class: 'button special',
-        function: () => operateCurrent('+-')
-    },
-    {
-        title: '%',
-        class: 'button special',
-        function: () => operateCurrent('%')
-    },
-    {
-        title: '√',
-        class: 'button special',
-        function: () => operateCurrent('√')
-    },
-    {
-        title: 'M',
-        class: 'button special',
-        function: () => memoryAddNumber()
-    },
-    {
-        title: 'MR',
-        class: 'button special',
-        function: () => memoryRecallNumber()
-    },
-    {
-        title: 'MC',
-        class: 'button special',
-        function: () => memoryClear()
-    },
-    {
-        title: '+',
-        class: 'button operator',
-        function: () => addOperator('+')
-    },
-    {
-        title: '1',
-        class: 'button number',
-        function: () => addNumber(1)
-    },
-    {
-        title: '2',
-        class: 'button number',
-        function: () => addNumber(2)
-    },
-    {
-        title: '3',
-        class: 'button number',
-        function: () => addNumber(3)
-    },
-    {
-        title: '-',
-        class: 'button operator',
-        function: () => addOperator('-')
-    },
-    {
-        title: '4',
-        class: 'button number',
-        function: () => addNumber(4)
-    },
-    {
-        title: '5',
-        class: 'button number',
-        function: () => addNumber(5)
-    },
-    {
-        title: '6',
-        class: 'button number',
-        function: () => addNumber(6)
-    },
-    {
-        title: '*',
-        class: 'button operator',
-        function: () => addOperator('*')
-    },
-    {
-        title: '7',
-        class: 'button number',
-        function: () => addNumber(7)
-    },
-    {
-        title: '8',
-        class: 'button number',
-        function: () => addNumber(8)
-    },
-    {
-        title: '9',
-        class: 'button number',
-        function: () => addNumber(9)
-    },
-    {
-        title: '/',
-        class: 'button operator',
-        function: () => addOperator('/')
-    },
-    {
-        title: '0',
-        class: 'button number doubled',
-        function: () => addNumber(0)
-    },
-    {
-        title: '.',
-        class: 'button number',
-        function: () => addDecimal()
-    },
-    {
-        title: '=',
-        class: 'button operator',
-        function: () => operate(activeOperator)
-    }
-]
-
-// ignore this; debugging purposes
-// let varDisplay = document.getElementById("variables");
-// window.setInterval(()=> {
-//     console.log(
-//     `active: ${activeNumber}, stored: ${storedNumber}, op: ${activeOperator}`)
-// }, 500);
+const keysTemplate = [
+    {value: 'C', type: 'clear'},
+    {value: '+-', type: 'operator-single'},
+    {value: '%', type: 'operator-single'},
+    {value: 'sqrt', type: 'operator-single'},
+    {value: 'M', type: 'memory-save'},
+    {value: 'MR', type: 'memory-remember'},
+    {value: 'MC', type: 'memory-clear'},
+    {value: '+', type: 'operator'},
+    {value: 1, type: 'number'},
+    {value: 2, type: 'number'},
+    {value: 3, type: 'number'},
+    {value: '-', type: 'operator'},
+    {value: 4, type: 'number'},
+    {value: 5, type: 'number'},
+    {value: 6, type: 'number'},
+    {value: '*', type: 'operator'},
+    {value: 7, type: 'number'},
+    {value: 8, type: 'number'},
+    {value: 9, type: 'number'},
+    {value: '/', type: 'operator'},
+    {value: 0, type: 'number'},
+    {value: '.', type: 'decimal'},
+    {value: '=', type: 'equal'}
+];
