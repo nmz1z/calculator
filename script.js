@@ -1,183 +1,339 @@
-let buttonsContainer = document.querySelector('.calculator__buttons-container');
-let displayNumber = document.getElementById("display-number")
-let displayExpression = document.querySelector('.display__number--small');
-let activeOperator = "";
-let currentNumber = 0;
-let storedNumber = "";
-let memoryNumber = "";
-let decimalActive = false;
-let decimalCounter = 1;
+const calcContainer = document.querySelector('.calculator-container');
 
-// inject buttons (based on data.js)
-function drawButtons(array){
-    for(const object of array){
-        let newButton = document.createElement("button");
-        newButton.className = object.class;
-        buttonsContainer.append(newButton);
-        newButton.addEventListener('click', object.function);
-        buttonsContainer.appendChild(newButton);
-        newButton.textContent = object.title;
+class Calculator {
+    constructor() {
+        this.body = document.createElement('div');
+        this.display = new Display(this.body);
+        this.computer = new Computer(this.display);
+    }
+
+    setUp(template) {
+
+        calcContainer.appendChild(this.body);
+        this.body.classList.add('calculator');
+
+        this.drawHeader();
+        this.drawScreen();
+
+        // keys
+        const keyboard = document.createElement('div');
+        keyboard.classList.add('calculator__buttons-container');
+        this.body.appendChild(keyboard);
+        this.drawKeyboard(template);
+
+        this.drawFooter();
+
+    }
+
+    drawHeader(){
+        const header = document.createElement('div');
+        header.classList.add('calculator__header');
+        this.body.appendChild(header);
+
+        // add logo
+        const logo = document.createElement('img');
+        logo.src = 'img/logo.png'
+        logo.classList.add('logo');
+        header.appendChild(logo);
+
+        // add theme button container
+        const themeDiv = document.createElement('div');
+        themeDiv.classList.add('theme__button');
+        header.appendChild(themeDiv);
+        // add them icon
+        const themeIcon = document.createElement('i');
+        themeIcon.classList.add('fa-solid');
+        themeIcon.classList.add('fa-moon');
+        themeDiv.appendChild(themeIcon);
+
+        // add socials container
+        const socialDiv = document.createElement('i');
+        socialDiv.classList.add('social-icons');
+        header.appendChild(socialDiv);
+
+        // add github anchor
+        const aGithub = document.createElement('a');
+        aGithub.href = 'https://github.com/nmz1z';
+        socialDiv.appendChild(aGithub);
+        // add github icon
+        const githubIcon = document.createElement('i');
+        githubIcon.classList.add('fa-brands');
+        githubIcon.classList.add('fa-github');
+        aGithub.appendChild(githubIcon);
+
+        // add twitter anchor
+        const aTwitter = document.createElement('a');
+        aTwitter.href = 'https://twitter.com/nmz1z_';
+        socialDiv.appendChild(aTwitter);
+        // add twitter icon
+        const twitter = document.createElement('i');
+        twitter.classList.add('fa-brands');
+        twitter.classList.add('fa-twitter');
+        aTwitter.appendChild(twitter);
+        }
+
+    drawKeyboard(template) {
+        const keyboard = this.body.querySelector('.calculator__buttons-container');
+        for(const item of template){
+            const key = new Key(item.value, item.type, this.computer);
+            key.getClickHandler();
+            const style = key.getClass(item.value, item.type);
+            key.body.className = style;
+            key.body.textContent = item.value;
+            key.body.addEventListener('click', key.handleClick);
+            keyboard.appendChild(key.body);
+        }
+    }
+    drawScreen() {
+        const screen = document.createElement('div');
+        screen.classList.add('calculator__display');
+        this.body.appendChild(screen);
+        this.display.expression.classList.add('display__number--small');
+        screen.appendChild(this.display.expression);
+        this.display.number.classList.add('display__number--big');
+        this.display.number.textContent = '0';
+        screen.appendChild(this.display.number);
+    }
+    drawFooter(){
+        // add footer div
+        const footer = document.createElement('div');
+        footer.classList.add('calculator__footer');
+        this.body.appendChild(footer);
+
+        // add footer anchor
+        const name = document.createElement('p');
+        name.href = 'https://twitter.com/nmz1z_';
+        footer.appendChild(name);
+        // add footer text
+        const website = document.createElement('a');
+        website.textContent = 'nmz1z';
+        website.href = 'https://nmz1z.github.io/landing-page/'
+        name.appendChild(website);
+
+        const year = document.createElement('p');
+        year.textContent = '2022';
+        footer.appendChild(year);
     }
 }
 
-// perform operation on the displayed number (%, +-, sqrt)
-function operateCurrent(operator){
-    if(currentNumber===''){
-        currentNumber = storedNumber;
+class Computer {
+    constructor(display) {
+        this.stored = '';
+        this.active = 0;
+        this.operator = '';
+        this.memory = '';
+        this.decimal = false;
+        this.decimalCounter = 1;
+        this.display = display;
     }
 
-    if(operator === '√'){
-        currentNumber = Math.sqrt(currentNumber);
-        resetDecimal()
-        updateDisplayNumber(currentNumber);
-        return;
-    }
-    else if(operator === '%'){
-        currentNumber = currentNumber/100;
-        resetDecimal()
-        updateDisplayNumber(currentNumber);
-        return;
-    }
-    else if(operator === '+-'){
-        currentNumber = -currentNumber;
-        updateDisplayNumber(currentNumber);
-        return;
-    }
-
-}
-
-// perform operation between two operands (+, -, *, /)
-function operate(operator){
-    updateDisplayExpression();
-    if(activeOperator === ""){
-        return;
-    }
-    if(operator === '+'){
-        currentNumber = storedNumber + currentNumber;
-    }
-    else if(operator === '-'){
-        currentNumber = storedNumber - currentNumber;
-    }
-    else if(operator === '*'){
-        currentNumber = storedNumber * currentNumber;
-    }
-    else if(operator === '/'){
-        if(currentNumber === 0){
-            currentNumber = 0;
-            updateDisplayNumber("ERROR")
+    // processor
+    addNumber(value){
+        if(this.active.toString().length > 11){
             return;
         }
-        currentNumber = storedNumber / currentNumber;
+        if(this.decimal){
+            this.active = parseFloat((this.active + value * (10 ** -this.decimal)).toFixed(this.decimal));
+            this.display.updateNumber(this.active);
+            this.decimal++;
+            return;
+        }
+        console.log(typeof this.active);
+        this.active = 10 * this.active + value;
+        this.display.updateNumber(this.active);
     }
-    resetDecimal()
-    updateDisplayNumber(currentNumber);
-    activeOperator = "";
-    storeNumber();
+
+    addDecimal(){
+        if(this.active.toString().length > 9) return;
+        if(this.decimal) return;
+
+        if(this.active ===  ''){
+            this.active = 0;
+        }
+        this.display.number.textContent = this.active + '.'
+        this.decimal = true;
+    }
+
+    resetDecimal(){
+        this.decimal = false;
+        this.decimalCounter = 1;
+    }
+
+    addOperator(value){
+        this.resetDecimal();
+
+        if(this.operator != ''){
+            this.operateBoth();
+            this.operator = value;
+            return;
+        }
+
+        this.operator = value;
+
+        if(this.active !== ''){
+            this.storeNumber();
+        }
+        this.display.updateExpression(this.active, this.stored, this.operator);
+
+    }
+
+    operateBoth(){
+        this.display.updateExpression(this.active, this.stored, this.operator);
+
+        if(this.operator === ''){
+            return;
+        }else if(this.operator === '+'){
+            this.active = this.stored + this.active;
+        }else if(this.operator === '-'){
+            this.active = this.stored - this.active;
+        }else if(this.operator === '*'){
+            this.active = this.stored * this.active;
+        }else if(this.operator === '/'){
+            if(this.active === 0){
+                this.display.updateNumber("ERROR");
+                return;
+            }
+            this.active = this.stored / this.active;
+        }
+
+        this.resetDecimal();
+        this.display.updateNumber(this.active);
+        this.operator = ""
+        this.storeNumber();
+
+    }
+
+    operateSingle(value){
+        if(this.active === ''){
+            this.active = this.stored;
+        }
+
+        if(value === 'sqrt'){
+            this.active = Math.sqrt(this.active);
+        }else if(value === '%'){
+            this.active = (this.active)/100;
+        }else if(value === '+-'){
+            this.active = -1 * (this.active);
+        }
+        this.display.updateNumber(this.active);
+
+    }
+
+    // cache
+    storeNumber(){
+        this.stored = this.active;
+        this.active = '';
+    }
+
+    clearNumbers(){
+        this.resetDecimal();
+        this.active = 0;
+        this.stored = '';
+        this.operator = '';
+        this.display.updateNumber(this.active);
+        this.display.updateExpression(this.active, this.stored, this.operator);
+    }
+
+    // memory
+    saveIntoMemory() {
+        this.memory = this.active;
+    }
+
+    getFromMemory() {
+        if(this.memory === '') return;
+        this.active = this.memory;
+        this.display.updateNumber(this.active);
+    }
+
+    clearMemory() {
+        this.memory = '';
+    }
+
+    // debug only
+    showValues(){
+        setInterval(() => {
+            console.log(`active: ${this.active}; stored: ${this.stored}, operator ${this.operator}`)
+        }, 500)
+    }
 }
 
-// Input Methods
-function addOperator(value){
-    resetDecimal();
-
-    if(activeOperator != ""){
-        operate(activeOperator);
-        activeOperator = value;
-        return;
+class Display {
+    constructor() {
+        this.number = document.createElement('p');
+        this.expression = document.createElement('p');
     }
-
-    activeOperator = value;
-
-    if(currentNumber === ''){
-
-    }else{
-        storeNumber();
+    updateNumber(number) {
+        if(number >= (10 ** 14)){
+            let display = number.toExponential(7);
+            this.number.textContent = display;
+            return;
+        }
+        else if(number % 1 !== 0 && number.toString().length > 10 ){
+            let integerLength = Math.trunc(number).toString().length;
+            this.number.textContent = parseFloat(number.toFixed(10 - integerLength));
+            return;
+        }
+        this.number.textContent = number;
     }
-    updateDisplayExpression();
-}
-
-function addDecimal(){
-    if(currentNumber.toString().length > 9){
-        return;
-    } else if(decimalActive){
-        return;
-    }
-
-    if(currentNumber ===  ""){
-        currentNumber = 0;
-    }
-    displayNumber.textContent = currentNumber + '.'
-    decimalActive = true;
-}
-
-function resetDecimal(){
-    decimalActive = false;
-    decimalCounter = 1;
-}
-
-function addNumber(entry){
-    if(currentNumber.toString().length > 11){
-        return;
-    }
-
-    if(decimalActive){
-        currentNumber = parseFloat((currentNumber + entry * (10 ** -decimalCounter)).toFixed(decimalCounter));
-        updateDisplayNumber(currentNumber);
-        decimalCounter++;
-        return;
-    }
-    currentNumber = 10 * currentNumber + entry;
-    updateDisplayNumber(currentNumber);
-}
-
-function storeNumber(){
-    storedNumber = currentNumber;
-    currentNumber = '';
-}
-
-function clearNumber(){
-    resetDecimal();
-    currentNumber = 0;
-    storedNumber = "";
-    activeOperator = "";
-    updateDisplayNumber(currentNumber);
-    updateDisplayExpression();
-}
-
-// Display
-function updateDisplayNumber(number){
-    if(number >= (10 ** 14)){
-        let display = number.toExponential(7);
-        displayNumber.textContent = display;
-        return;
-    }
-    else if(currentNumber % 1 !== 0 && currentNumber.toString().length > 10 ){
-        let integerLength = Math.trunc(currentNumber).toString().length;
-        displayNumber.textContent = parseFloat(number.toFixed(10 - integerLength));
-        return;
-    }
-    displayNumber.textContent = number;
-}
-
-function updateDisplayExpression(){
-    let num = currentNumber;
-    if(currentNumber === 0){
+    updateExpression(active, stored, operator) {
+        let num = active;
+        if(active === 0){
         num = ""
     }
-    displayExpression.textContent = `${storedNumber} ${activeOperator} ${num}`;
+        this.expression.textContent = `${stored} ${operator} ${num}`;
+    }
 }
 
-// Memory
-function memoryAddNumber(){
-    memoryNumber = currentNumber;
+class Key {
+    constructor(value, type, computer) {
+        this.body = document.createElement('button');
+        this.value = value;
+        this.type = type;
+        this.computer = computer;
+        this.handleClick;
+    }
+    getClickHandler() {
+        const computer = this.computer;
+        if (this.type === 'number') {
+            this.handleClick = () => computer.addNumber(this.value);
+        } else if (this.type === 'operator') {
+            this.handleClick = () => computer.addOperator(this.value);
+        } else if (this.type === 'operator-single') {
+            this.handleClick = () => computer.operateSingle(this.value);
+        } else if (this.type === 'decimal') {
+            this.handleClick = () => computer.addDecimal();
+        } else if (this.type === 'equal') {
+            this.handleClick = () => computer.operateBoth();
+        } else if (this.type === 'clear') {
+            this.handleClick = () => computer.clearNumbers();
+        } else if (this.type === 'memory-save') {
+            this.handleClick = () => computer.saveIntoMemory();
+        } else if (this.type === 'memory-clear') {
+            this.handleClick = () => computer.clearMemory();
+        } else if (this.type === 'memory-remember') {
+            this.handleClick = () => computer.getFromMemory();
+        }
+    }
+    getClass(value, type) {
+        if (value === 0) {
+            return 'button number doubled';
+        }
+        if (type === 'number' || type === 'decimal') {
+            return 'button number';
+        } else if (type === 'operator' || type === 'equal') {
+            return 'button operator';
+        } else {
+            return 'button special';
+        }
+    }
 }
-function memoryRecallNumber(){
-    if(memoryNumber === '') return;
-    currentNumber = memoryNumber;
-    updateDisplayNumber(currentNumber);
-}
-function memoryClear(){
-    memoryNumber = '';
+
+function createCalculator(){
+    const calculator = new Calculator;
+    calculator.setUp(keysTemplate);
 }
 
 // init
-drawButtons(buttonsArray);
+createCalculator(keysTemplate, true);
+const magicButton = document.getElementById('magic-button');
+magicButton.addEventListener('click', createCalculator);
