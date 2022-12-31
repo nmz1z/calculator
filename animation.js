@@ -1,7 +1,6 @@
 const canvas = document.getElementById('bg__canvas');
 const ctx = canvas.getContext('2d');
 
-
 let body = document.body;
 let html = document.documentElement;
 let docHeight = Math.max(body.scrollHeight, body.offsetHeight,
@@ -27,7 +26,6 @@ class Symbol {
     }
     drawHorizontal(context){
         this.text = this.characters.charAt(Math.floor(Math.random()*this.characters.length));
-        // context.fillStyle = 'gray'
         context.fillText(this.text, this.x * this.font, this.y * this.font);
         if (this.x * this.font > this.width && Math.random() > 0.98){
             this.x = 0;
@@ -76,7 +74,6 @@ function animate(timeStamp){
     lastTime = timeStamp;
     if(timer > nextFrame){
         ctx.fillStyle = canvasBgColor;
-        // ctx.font = effect.font + 'px monospace';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = canvasTextColor;
         ctx.font = effect.font + 'px monospace';
@@ -89,7 +86,6 @@ function animate(timeStamp){
     requestAnimationFrame(animate);
 
 }
-let themeButton = document.querySelector('.theme__button');
 let darkTheme = true;
 let themeAnimation = false;
 function toggleTheme() {
@@ -103,23 +99,25 @@ function toggleTheme() {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         canvasBgColor = 'rgba(220, 220, 220, 0.05)';
         canvasTextColor = 'rgb(180, 100, 0)';
-        document.getElementById('theme-button').className = 'fa-solid fa-sun'
+        const buttons = document.querySelectorAll('.fa-solid')
+        for(let i = 0; i < buttons.length; i++){
+            buttons[i].className = 'fa-solid fa-sun';
+        }
     }else{
         darkTheme = true;
         ctx.fillStyle = 'rgba(0, 0, 0, 0.95)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         canvasBgColor = 'rgba(0, 0, 0, 0.05)';
         canvasTextColor = 'rgb(120, 60, 0)';
-        document.getElementById('theme-button').className = 'fa-solid fa-moon'
+        const buttons = document.querySelectorAll('.fa-solid')
+        for(let i = 0; i < buttons.length; i++){
+            buttons[i].className = 'fa-solid fa-moon';
+        }
     }
     setTimeout(()=>{themeAnimation = false;}, 500)
 }
-//
-themeButton.addEventListener('click', toggleTheme);
 
-animate(50);
-
-window.addEventListener('resize', () => {
+function recalculateWindowSize(){
     let body = document.body;
     let html = document.documentElement;
     let docHeight = Math.max(body.scrollHeight, body.offsetHeight,
@@ -128,4 +126,30 @@ window.addEventListener('resize', () => {
     canvas.height = docHeight;
     canvas.width = window.innerWidth;
     effect.resize(canvas.width, canvas.height);
-});
+}
+function addEventThemeButtons(){
+    const buttons = document.querySelectorAll('.fa-solid');
+    if(darkTheme){
+        for(let i = 0; i < buttons.length; i++){
+            buttons[i].className = 'fa-solid fa-moon';
+        }
+    }else{
+        for(let i = 0; i < buttons.length; i++){
+            buttons[i].className = 'fa-solid fa-sun';
+        }
+    }
+
+    let themeButton = document.querySelectorAll('.theme__button');
+    console.log(themeButton);
+    for(let i = 0; i < themeButton.length; i++){
+        themeButton[i].addEventListener('click', toggleTheme);
+    }
+    let doc
+}
+
+//
+addEventThemeButtons();
+animate(50);
+window.addEventListener('resize', recalculateWindowSize);
+magicButton.addEventListener('click', addEventThemeButtons);
+magicButton.addEventListener('click', recalculateWindowSize);
