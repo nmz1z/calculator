@@ -1,16 +1,27 @@
+// canvas
 const canvas = document.getElementById('bg__canvas');
 const ctx = canvas.getContext('2d');
 
+// canvas size
 let body = document.body;
 let html = document.documentElement;
-let docHeight = Math.max(body.scrollHeight, body.offsetHeight,
-  html.clientHeight, html.scrollHeight, html.offsetHeight);
-
+let docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
 canvas.height = docHeight;
 canvas.width = window.innerWidth;
 
-var vertical = true;
+// animation
+let lastTime = 0;
+let fps = 19;
+let nextFrame = 53;
+let timer = 0;
 
+//
+let darkTheme = true;
+let themeAnimation = false;
+let canvasBgColor = 'rgba(0, 0, 0, 0.05)';
+let canvasTextColor = 'rgb(120, 60, 0)';
+
+// classes
 class Symbol {
     constructor(x, y, font, height, width){
         this.characters = '1234567890';
@@ -39,7 +50,7 @@ class Effect {
     constructor(width, height, font){
         this.width = width;
         this.height = height;
-        this.font = 20;
+        this.font = 23;
         this.columns = this.width / this.font;
         this.rows = this.height / this.font;
         this.symbols = [];
@@ -60,15 +71,7 @@ class Effect {
     }
 }
 
-const effect = new Effect(canvas.width, canvas.height);
-let lastTime = 0;
-let fps = 16;
-const nextFrame = 1000/fps;
-let timer = 0;
-
-let canvasBgColor = 'rgba(0, 0, 0, 0.05)';
-let canvasTextColor = 'rgb(120, 60, 0)';
-
+// animation/canvas functions
 function animate(timeStamp){
     const deltaTime = timeStamp - lastTime;
     lastTime = timeStamp;
@@ -83,38 +86,11 @@ function animate(timeStamp){
     } else {
         timer += deltaTime;
     }
-    requestAnimationFrame(animate);
-
-}
-let darkTheme = true;
-let themeAnimation = false;
-function toggleTheme() {
-    if(themeAnimation){
+    if(!animation){
         return;
     }
-    themeAnimation = true;
-    if(darkTheme){
-        darkTheme = false;
-        ctx.fillStyle = 'rgba(220, 220, 220, 0.65)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        canvasBgColor = 'rgba(220, 220, 220, 0.05)';
-        canvasTextColor = 'rgb(180, 100, 0)';
-        const buttons = document.querySelectorAll('.fa-solid')
-        for(let i = 0; i < buttons.length; i++){
-            buttons[i].className = 'fa-solid fa-sun';
-        }
-    }else{
-        darkTheme = true;
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.95)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        canvasBgColor = 'rgba(0, 0, 0, 0.05)';
-        canvasTextColor = 'rgb(120, 60, 0)';
-        const buttons = document.querySelectorAll('.fa-solid')
-        for(let i = 0; i < buttons.length; i++){
-            buttons[i].className = 'fa-solid fa-moon';
-        }
-    }
-    setTimeout(()=>{themeAnimation = false;}, 500)
+    requestAnimationFrame(animate);
+
 }
 
 function recalculateWindowSize(){
@@ -127,29 +103,103 @@ function recalculateWindowSize(){
     canvas.width = window.innerWidth;
     effect.resize(canvas.width, canvas.height);
 }
-function addEventThemeButtons(){
-    const buttons = document.querySelectorAll('.fa-solid');
+
+let animation = true;
+
+function toogleAnimation(){
+    if(animation){
+        animation = false;
+        const buttons = document.querySelectorAll('.fa-solid.fa-pause')
+        for(let i = 0; i < buttons.length; i++){
+            buttons[i].className = 'fa-solid fa-play';
+        }
+    }else{
+        animation = true;
+        const buttons = document.querySelectorAll('.fa-solid.fa-play')
+        for(let i = 0; i < buttons.length; i++){
+            buttons[i].className = 'fa-solid fa-pause';
+        }
+        animate(50);
+    }
+}
+
+function addAnimationButtons(){
+    if(animation){
+        const buttons = document.querySelectorAll('.fa-solid.fa-play');
+        for(let i = 0; i < buttons.length; i++){
+            buttons[i].className = 'fa-solid fa-pause';
+        }
+    }else{
+        const buttons = document.querySelectorAll('.fa-solid.fa-pause');
+        for(let i = 0; i < buttons.length; i++){
+            buttons[i].className = 'fa-solid fa-play';
+        }
+    }
+    let animationButtons = document.querySelectorAll('.animation__button');
+    for(let i = 0; i < animationButtons.length; i++){
+        console.log('a');
+        animationButtons[i].addEventListener('click', toogleAnimation);
+    }
+}
+
+// theme functions
+function toggleTheme() {
+
+    if(themeAnimation){
+        return;
+    }
+    themeAnimation = true;
+
     if(darkTheme){
+        darkTheme = false;
+        document.body.style.backgroundColor = 'white';
+        ctx.fillStyle = 'rgba(220, 220, 220, 0.7)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        canvasBgColor = 'rgba(220, 220, 220, 0.05)';
+        canvasTextColor = 'rgb(180, 100, 0)';
+        const buttons = document.querySelectorAll('.fa-solid.fa-moon')
+        for(let i = 0; i < buttons.length; i++){
+            buttons[i].className = 'fa-solid fa-sun';
+        }
+    }else{
+        darkTheme = true;
+        document.body.style.backgroundColor = 'black';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        canvasBgColor = 'rgba(0, 0, 0, 0.05)';
+        canvasTextColor = 'rgb(120, 60, 0)';
+        const buttons = document.querySelectorAll('.fa-solid.fa-sun')
+        for(let i = 0; i < buttons.length; i++){
+            buttons[i].className = 'fa-solid fa-moon';
+        }
+    }
+    setTimeout(()=>{themeAnimation = false;}, 500)
+}
+
+function addEventThemeButtons(){
+    if(darkTheme){
+        const buttons = document.querySelectorAll('.fa-solid.fa-sun');
         for(let i = 0; i < buttons.length; i++){
             buttons[i].className = 'fa-solid fa-moon';
         }
     }else{
+        const buttons = document.querySelectorAll('.fa-solid.fa-moon');
         for(let i = 0; i < buttons.length; i++){
             buttons[i].className = 'fa-solid fa-sun';
         }
     }
-
     let themeButton = document.querySelectorAll('.theme__button');
-    console.log(themeButton);
     for(let i = 0; i < themeButton.length; i++){
         themeButton[i].addEventListener('click', toggleTheme);
     }
-    let doc
 }
 
 //
+const effect = new Effect(canvas.width, canvas.height);
 addEventThemeButtons();
+addAnimationButtons();
 animate(50);
 window.addEventListener('resize', recalculateWindowSize);
 magicButton.addEventListener('click', addEventThemeButtons);
+magicButton.addEventListener('click', addAnimationButtons);
 magicButton.addEventListener('click', recalculateWindowSize);
