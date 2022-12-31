@@ -340,16 +340,18 @@ class Key {
     }
 }
 
-function getRandomText(){
-    let array = ['This is so stupid', 'Why??', 'Don\'t click', 'STOP!'];
+function getRandomText(array){
     let index = Math.floor(Math.random() * array.length);
+    if(magicButton.textContent === array[index]){
+        getRandomText(textArray);
+    }
     return array[index];
 }
 
 function createCalculator(){
     const calculator = new Calculator;
     calculator.setUp(keysTemplate);
-    magicButton.textContent = getRandomText();
+    magicButton.textContent = getRandomText(textArray);
 
 }
 

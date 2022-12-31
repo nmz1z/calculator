@@ -23,3 +23,11 @@ const keysTemplate = [
     {value: '.', type: 'decimal'},
     {value: '=', type: 'equal'}
 ];
+
+const textArray = [
+    'This is so stupid',
+    'Why??',
+    'Don\'t click',
+    'STOP!',
+    'Seriously...',
+    ];
