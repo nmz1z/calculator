@@ -2,6 +2,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Noto Sans', sans-serif;
+    /* border: 1px red solid; */
 }
 body{
     display: flex;
@@ -29,7 +31,7 @@ canvas{
     width: 90%;
     min-width: 250px;
     max-width: 350px;
-    background-color: rgba(25, 25, 25, 0.7);
+    background-color: rgba(34, 34, 34, 0.7);
     padding: 20px 0 20px;
     border-radius: 10px;
 }
@@ -56,11 +58,17 @@ canvas{
 .theme__button{
     cursor: pointer;
     font-size: 25px;
-    margin-left: auto;
-    margin-right: 20px;
+    margin-left: 15%;
     color: orange;
-    align-self: center;
 }
+.animation__button{
+    cursor: pointer;
+    font-size: 25px;
+    margin-left: 5%;
+    margin-right: auto;
+    color: orange;
+}
+
 .calculator__display{
     margin: 10px auto;
     width: 90%;
@@ -115,7 +123,7 @@ canvas{
     background-color: rgba(255, 166, 0, 0.8);
 }
 .number{
-    background-color: rgba(44, 44, 44, 0.85);
+    background-color: rgba(59, 59, 59, 0.85);
 }
 .calculator__footer{
     color: orange;
@@ -130,9 +138,14 @@ a:last-of-type{
 
 .magic-button{
     cursor: pointer;
+    font: inherit;
+    min-width: 200px;
+    padding: 5px;
+    border: unset;
+    border-radius: 5px;
     align-self: center;
     margin-top: 50px;
-    background-color: orange;
+    background-color: rgba(255, 166, 0, 0.576);
     color: black;
     font-size: x-large;
 }
