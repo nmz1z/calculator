@@ -129,6 +129,7 @@ a:last-of-type{
 }
 
 .magic-button{
+    cursor: pointer;
     align-self: center;
     margin-top: 50px;
     background-color: orange;
