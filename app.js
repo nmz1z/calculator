@@ -148,7 +148,7 @@ class Computer {
             this.decimal++;
             return;
         }
-        console.log(typeof this.active);
+
         this.active = 10 * this.active + value;
         this.display.updateNumber(this.active);
     }
@@ -343,16 +343,17 @@ class Key {
 function getRandomText(array){
     let index = Math.floor(Math.random() * array.length);
     if(magicButton.textContent === array[index]){
+        console.log('new');
         getRandomText(textArray);
+    }else{
+        magicButton.textContent = array[index];
     }
-    return array[index];
 }
 
 function createCalculator(){
     const calculator = new Calculator;
     calculator.setUp(keysTemplate);
-    magicButton.textContent = getRandomText(textArray);
-
+    getRandomText(textArray);
 }
 
 // init

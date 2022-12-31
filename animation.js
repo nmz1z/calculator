@@ -137,7 +137,6 @@ function addAnimationButtons(){
     }
     let animationButtons = document.querySelectorAll('.animation__button');
     for(let i = 0; i < animationButtons.length; i++){
-        console.log('a');
         animationButtons[i].addEventListener('click', toogleAnimation);
     }
 }
