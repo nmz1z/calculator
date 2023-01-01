@@ -89,6 +89,15 @@ canvas{
     margin: 0 10px 0  0;
     font-size: 2.5rem;
 }
+.display__memory{
+    visibility: hidden;
+    margin-left: 5px;
+    font-size: 1.25em;
+    align-self: flex-start;
+}
+.memory-active{
+    visibility: visible;
+}
 .calculator__buttons-container{
     align-content: center;
     justify-content: center;

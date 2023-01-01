@@ -14,28 +14,19 @@ class Calculator {
 
         this.drawHeader();
         this.drawScreen();
-
-        // keys
-        const keyboard = document.createElement('div');
-        keyboard.classList.add('calculator__buttons-container');
-        this.body.appendChild(keyboard);
         this.drawKeyboard(template);
-
         this.drawFooter();
-
     }
 
     drawHeader(){
         const header = document.createElement('div');
         header.classList.add('calculator__header');
         this.body.appendChild(header);
-
         // add logo
         const logo = document.createElement('img');
         logo.src = 'img/logo.png'
         logo.classList.add('logo');
         header.appendChild(logo);
-
         // add theme button
         const themeButton = document.createElement('div');
         themeButton.classList.add('theme__button');
@@ -45,7 +36,6 @@ class Calculator {
         themeIcon.classList.add('fa-solid');
         themeIcon.classList.add('fa-moon');
         themeButton.appendChild(themeIcon);
-
          // add animation button container
          const animationButton = document.createElement('div');
          animationButton.classList.add('animation__button');
@@ -55,14 +45,10 @@ class Calculator {
          animationIcon.classList.add('fa-solid');
          animationIcon.classList.add('fa-pause');
          animationButton.appendChild(animationIcon);
-
-
-
         // add socials container
         const socialDiv = document.createElement('i');
         socialDiv.classList.add('social-icons');
         header.appendChild(socialDiv);
-
         // add github anchor > icon
         const aGithub = document.createElement('a');
         aGithub.href = 'https://github.com/nmz1z';
@@ -71,19 +57,20 @@ class Calculator {
         githubIcon.classList.add('fa-brands');
         githubIcon.classList.add('fa-github');
         aGithub.appendChild(githubIcon);
-
         // add twitter anchor > icon
         const aTwitter = document.createElement('a');
         aTwitter.href = 'https://twitter.com/nmz1z_';
         socialDiv.appendChild(aTwitter);
-        const twitter = document.createElement('i');
-        twitter.classList.add('fa-brands');
-        twitter.classList.add('fa-twitter');
-        aTwitter.appendChild(twitter);
+        const twitterIcon = document.createElement('i');
+        twitterIcon.classList.add('fa-brands');
+        twitterIcon.classList.add('fa-twitter');
+        aTwitter.appendChild(twitterIcon);
         }
 
     drawKeyboard(template) {
-        const keyboard = this.body.querySelector('.calculator__buttons-container');
+        const keyboard = document.createElement('div');
+        keyboard.classList.add('calculator__buttons-container'); // grid container for keys
+        this.body.appendChild(keyboard);
         for(const item of template){
             const key = new Key(item.value, item.type, this.computer);
             key.getClickHandler();
@@ -98,28 +85,34 @@ class Calculator {
         const screen = document.createElement('div');
         screen.classList.add('calculator__display');
         this.body.appendChild(screen);
+        //
+        this.display.memory.classList.add('display__memory');
+        this.display.memory.textContent = 'M';
+        screen.appendChild(this.display.memory);
+        //
         this.display.expression.classList.add('display__number--small');
         screen.appendChild(this.display.expression);
+        //
         this.display.number.classList.add('display__number--big');
         this.display.number.textContent = '0';
         screen.appendChild(this.display.number);
+
     }
     drawFooter(){
-        // add footer div
+        // footer div
         const footer = document.createElement('div');
         footer.classList.add('calculator__footer');
         this.body.appendChild(footer);
-
-        // add footer anchor
+        // footer anchor
         const name = document.createElement('p');
         name.href = 'https://twitter.com/nmz1z_';
         footer.appendChild(name);
-        // add footer text
+        // footer text
         const website = document.createElement('a');
         website.textContent = 'nmz1z';
         website.href = 'https://nmz1z.github.io/landing-page/'
         name.appendChild(website);
-
+        //
         const year = document.createElement('p');
         year.textContent = '2022';
         footer.appendChild(year);
@@ -128,9 +121,9 @@ class Calculator {
 
 class Computer {
     constructor(display) {
-        this.stored = '';
-        this.active = 0;
-        this.operator = '';
+        this.stored = '';       // stored operand
+        this.active = 0;        // active operand
+        this.operator = '';     // active operator
         this.memory = '';
         this.decimal = false;
         this.decimalCounter = 1;
@@ -229,7 +222,7 @@ class Computer {
 
     }
 
-    // cache
+    // memory functions
     storeNumber(){
         this.stored = this.active;
         this.active = '';
@@ -244,8 +237,10 @@ class Computer {
         this.display.updateExpression(this.active, this.stored, this.operator);
     }
 
-    // memory
     saveIntoMemory() {
+        if(this.memory === ''){
+            this.display.toggleMemory();
+        }
         this.memory = this.active;
     }
 
@@ -256,10 +251,13 @@ class Computer {
     }
 
     clearMemory() {
-        this.memory = '';
+        if(this.memory !== ''){
+            this.memory = '';
+            this.display.toggleMemory();
+        }
     }
 
-    // debug only
+    // for debugging purposes only
     showValues(){
         setInterval(() => {
             console.log(`active: ${this.active}; stored: ${this.stored}, operator ${this.operator}`)
@@ -271,6 +269,7 @@ class Display {
     constructor() {
         this.number = document.createElement('p');
         this.expression = document.createElement('p');
+        this.memory = document.createElement('p');
     }
     updateNumber(number) {
         if(number >= (10 ** 14)){
@@ -291,6 +290,10 @@ class Display {
         num = ""
     }
         this.expression.textContent = `${stored} ${operator} ${num}`;
+    }
+
+    toggleMemory(){
+        this.memory.classList.toggle('memory-active');
     }
 }
 
@@ -354,7 +357,6 @@ function getRandomText(array){
         return;
     }
     if(magicButton.textContent === array[index]){
-        console.log('new');
         getRandomText(textArray);
     }else{
         magicButton.textContent = array[index];
@@ -369,7 +371,5 @@ function createCalculator(){
 }
 
 // init
-// const newCalc = new Calculator;
-// newCalc.setUp(keysTemplate);
 const magicButton = document.getElementById('magic-button');
 magicButton.addEventListener('click', createCalculator);
