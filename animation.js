@@ -12,13 +12,13 @@ canvas.width = window.innerWidth;
 // animation
 let lastTime = 0;
 let fps = 19;
-let nextFrame = 53;
+let nextFrame = 40;
 let timer = 0;
 
 //
 let darkTheme = true;
 let themeAnimation = false;
-let canvasBgColor = 'rgba(0, 0, 0, 0.05)';
+let canvasBgColor = 'rgba(0, 0, 0, 0.2)';
 let canvasTextColor = 'rgb(120, 60, 0)';
 
 // classes
@@ -54,9 +54,9 @@ class Effect {
         this.columns = this.width / this.font;
         this.rows = this.height / this.font;
         this.symbols = [];
-        this.#initialize();
+        this.initialize();
     }
-    #initialize(){
+    initialize(){
         // horizontal
         for (let i = 0; i < this.rows; i++) {
             this.symbols[i] = new Symbol(canvas.width, i, this.font, this.height, this.width);
@@ -67,7 +67,7 @@ class Effect {
         this.height = height;
         this.rows = this.height / this.font;
         this.symbols = [];
-        this.#initialize();
+        this.initialize();
     }
 }
 
@@ -144,6 +144,10 @@ function addAnimationButtons(){
 // theme functions
 function toggleTheme() {
 
+    if(!animation){
+        toogleAnimation();
+        animation = true;
+    }
     if(themeAnimation){
         return;
     }
@@ -151,12 +155,13 @@ function toggleTheme() {
 
     if(darkTheme){
         darkTheme = false;
-        document.body.style.backgroundColor = 'white';
+        document.body.style.backgroundColor = 'rgb(220, 220, 220)';
         ctx.fillStyle = 'rgba(220, 220, 220, 0.7)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        canvasBgColor = 'rgba(220, 220, 220, 0.05)';
+        canvasBgColor = 'rgba(220, 220, 220, 0.08)';
         canvasTextColor = 'rgb(180, 100, 0)';
-        const buttons = document.querySelectorAll('.fa-solid.fa-moon')
+        // const buttons = document.querySelectorAll('.fa-solid.fa-moon');
+        const buttons = document.querySelectorAll('.fa-moon');
         for(let i = 0; i < buttons.length; i++){
             buttons[i].className = 'fa-solid fa-sun';
         }
@@ -165,7 +170,7 @@ function toggleTheme() {
         document.body.style.backgroundColor = 'black';
         ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        canvasBgColor = 'rgba(0, 0, 0, 0.05)';
+        canvasBgColor = 'rgba(0, 0, 0, 0.1)';
         canvasTextColor = 'rgb(120, 60, 0)';
         const buttons = document.querySelectorAll('.fa-solid.fa-sun')
         for(let i = 0; i < buttons.length; i++){
@@ -202,3 +207,9 @@ window.addEventListener('resize', recalculateWindowSize);
 magicButton.addEventListener('click', addEventThemeButtons);
 magicButton.addEventListener('click', addAnimationButtons);
 magicButton.addEventListener('click', recalculateWindowSize);
+magicButton.addEventListener('click', () => {
+    if(!animation){
+        toogleAnimation();
+        animation = true;
+    }
+});
