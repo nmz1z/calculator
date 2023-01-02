@@ -347,7 +347,7 @@ function getRandomText(array){
     let index = Math.floor(Math.random() * array.length);
     const calcCounter = document.querySelectorAll('.calculator').length;
     if(calcCounter === 0){
-        magicButton.textContent = 'Create another Calculator';
+        magicButton.textContent = 'Click again';
         return;
     }else if(calcCounter === 1){
         magicButton.textContent = 'Ok, maybe one more?';
