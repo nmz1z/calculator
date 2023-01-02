@@ -350,7 +350,7 @@ function getRandomText(array){
         magicButton.textContent = 'Click again';
         return;
     }else if(calcCounter === 1){
-        magicButton.textContent = 'Ok, maybe one more?';
+        magicButton.textContent = 'One more time?';
         return;
     }else if(calcCounter === 2){
         magicButton.textContent = 'That\'s enough...';
